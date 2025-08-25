@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div>
+        <h2>Search Results for "{{ query }}"</h2>
+        <p>Showing top results from Myntra. (This is a Proof of Concept)</p>
+
+        {% if products %}
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+                {% for product in products %}
+                    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 5px;">
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}" style="max-width: 100%; height: auto;">
+                        <h4>{{ product.brand }}</h4>
+                        <p>{{ product.name }}</p>
+                        <p><strong>{{ product.price }}</strong></p>
+                        <a href="{{ product.link }}" target="_blank">View on Myntra</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No products found, or the scraper could not retrieve results.</p>
+        {% endif %}
+    </div>
+{% endblock content %}

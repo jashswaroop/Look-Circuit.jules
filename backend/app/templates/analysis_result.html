@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div>
+        <h2>Analysis Results</h2>
+        <div>
+            <img src="{{ url_for('static', filename='uploads/' + image.filename) }}" alt="Analyzed Image" width="250">
+        </div>
+        <h3>Your Results:</h3>
+        <ul>
+            <li><strong>Face Shape:</strong> {{ image.face_shape or 'Could not determine' }}</li>
+            <li><strong>Skin Tone:</strong> {{ image.skin_tone or 'Could not determine' }}</li>
+        </ul>
+        <p><a href="{{ url_for('main.analysis') }}">Analyze another photo</a></p>
+    </div>
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div>
+        <h2>Profile Information</h2>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset>
+                <legend>Account Info</legend>
+                <div>
+                    {{ form.username.label }}
+                    {{ form.username(size=20) }}
+                    {% if form.username.errors %}<div class="errors">{% for error in form.username.errors %}<span>{{ error }}</span>{% endfor %}</div>{% endif %}
+                </div>
+                <div>
+                    {{ form.email.label }}
+                    {{ form.email(size=20) }}
+                    {% if form.email.errors %}<div class="errors">{% for error in form.email.errors %}<span>{{ error }}</span>{% endfor %}</div>{% endif %}
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Personal Details</legend>
+                <div>{{ form.name.label }} {{ form.name(size=20) }}</div>
+                <div>{{ form.age.label }} {{ form.age(size=20) }}</div>
+                <div>{{ form.gender.label }} {{ form.gender(size=20) }}</div>
+                <div>{{ form.height.label }} {{ form.height(size=20) }}</div>
+                <div>{{ form.body_shape.label }} {{ form.body_shape(size=20) }}</div>
+                <div>{{ form.location_climate.label }} {{ form.location_climate(size=20) }}</div>
+                <div>{{ form.fashion_style.label }} {{ form.fashion_style(size=20) }}</div>
+            </fieldset>
+            <div>
+                {{ form.submit() }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

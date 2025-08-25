@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div>
+        <h2>Analyze Your Photo</h2>
+        <p>Upload a clear, front-facing photo of yourself to analyze your face shape and skin tone.</p>
+        <form method="POST" action="" enctype="multipart/form-data">
+            <div>
+                <label for="file">Select image:</label>
+                <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/jpg">
+            </div>
+            <br>
+            <div>
+                <button type="submit">Analyze</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

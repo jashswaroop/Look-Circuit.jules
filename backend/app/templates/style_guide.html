@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div>
+        <h2>Your Style Guide</h2>
+        <p>Fill out this guide to help us understand your unique style. This will power your recommendations.</p>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset>
+                <legend>About Your Style</legend>
+                <div>{{ form.fashion_preferences.label }}<br>{{ form.fashion_preferences(rows=3, cols=35) }}</div>
+                <div>{{ form.budget.label }}<br>{{ form.budget(size=40) }}</div>
+                <div>{{ form.lifestyle.label }}<br>{{ form.lifestyle(size=40) }}</div>
+                <div>{{ form.social_activities.label }}<br>{{ form.social_activities(size=40) }}</div>
+                <div>{{ form.fashion_risk_tolerance.label }}<br>{{ form.fashion_risk_tolerance(size=40) }}</div>
+                <div>{{ form.comfort_vs_style.label }}<br>{{ form.comfort_vs_style(size=40) }}</div>
+                <div>{{ form.preferred_colors.label }}<br>{{ form.preferred_colors(size=40) }}</div>
+                <div>{{ form.avoided_colors.label }}<br>{{ form.avoided_colors(size=40) }}</div>
+                <div>{{ form.brand_preferences.label }}<br>{{ form.brand_preferences(size=40) }}</div>
+                <div>{{ form.preferred_stores.label }}<br>{{ form.preferred_stores(size=40) }}</div>
+            </fieldset>
+            <br>
+            <div>
+                {{ form.submit() }}
+            </div>
+        </form>
+    </div>
+{% endblock content %}

@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1>Dashboard</h1>
+    <p>Welcome, {{ current_user.username }}!</p>
+    <p>This is your main dashboard. From here you can access all the features.</p>
+
+    <div>
+        <h2>Search for Products</h2>
+        <form action="{{ url_for('main.search') }}" method="GET">
+            <input type="text" name="query" placeholder="e.g., blue blazer" required>
+            <button type="submit">Search on Myntra (PoC)</button>
+        </form>
+    </div>
+    <hr>
+    <!-- We will add cards and links to other sections here later -->
+    <div>
+        <h2>Quick Actions</h2>
+        <ul>
+            <li><a href="{{ url_for('main.analysis') }}">Analyze a Photo</a></li>
+            <li><a href="{{ url_for('main.style_guide') }}">Update Your Style Guide</a></li>
+            <li><a href="{{ url_for('main.profile') }}">Update Profile</a></li>
+        </ul>
+    </div>
+{% endblock content %}

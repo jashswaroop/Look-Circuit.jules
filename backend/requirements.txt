@@ -1,0 +1,15 @@
+Flask
+Flask-SQLAlchemy
+Flask-Login
+Flask-WTF
+WTForms
+Werkzeug
+Pillow
+opencv-python
+numpy
+scikit-learn
+python-dotenv
+email-validator
+requests
+beautifulsoup4
+playwright
