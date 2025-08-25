@@ -1,114 +1,108 @@
-import requests
+from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 
 def scrape_myntra(query):
     """
-    Scrapes Myntra for a given search query.
-
-    Args:
-        query (str): The search term.
-
-    Returns:
-        list: A list of dictionaries, where each dictionary represents a product.
+    Scrapes Myntra for a given search query using Playwright to handle JavaScript rendering.
     """
     search_query = query.replace(' ', '-')
     url = f"https://www.myntra.com/{search_query}"
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-    }
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        try:
+            page.goto(url, wait_until='networkidle', timeout=30000)
+            # Wait for the product grid to be visible
+            page.wait_for_selector('ul.results-base', timeout=10000)
+            html_content = page.content()
+        except Exception as e:
+            print(f"Error with Playwright navigation or waiting: {e}")
+            browser.close()
+            return []
+        finally:
+            browser.close()
 
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status() # Raise an exception for bad status codes
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching Myntra page: {e}")
-        return []
-
-    soup = BeautifulSoup(response.content, 'html.parser')
+    soup = BeautifulSoup(html_content, 'html.parser')
 
     products = []
-    # NOTE: These selectors are based on Myntra's structure as of a certain date.
-    # They are highly likely to break and will need maintenance.
-    product_list = soup.find_all('li', class_='product-base')
+    product_list = soup.select('li.product-base')
 
-    for item in product_list[:5]: # Limit to first 5 results for the PoC
+    for item in product_list[:5]:
         product = {}
         try:
-            brand = item.find('h3', class_='product-brand')
-            name = item.find('h4', class_='product-product')
-            price_info = item.find('div', class_='product-price')
+            brand = item.select_one('h3.product-brand')
+            name = item.select_one('h4.product-product')
+            price_info = item.select_one('div.product-price')
             link_tag = item.find('a')
+            img_tag = item.select_one('picture.img-responsive img')
 
-            if all([brand, name, price_info, link_tag]):
+            if all([brand, name, price_info, link_tag, img_tag]):
                 product['brand'] = brand.get_text(strip=True)
                 product['name'] = name.get_text(strip=True)
 
-                # Extract price, handling discounted and original prices
-                price_span = price_info.find('span', class_='product-discountedPrice')
+                price_span = price_info.select_one('span.product-discountedPrice')
                 if not price_span:
-                    price_span = price_info.find('span') # Fallback for non-discounted
+                    price_span = price_info.find('span')
 
                 product['price'] = price_span.get_text(strip=True) if price_span else "N/A"
 
-                # Construct absolute URL if the link is relative
                 href = link_tag.get('href')
                 product['link'] = f"https://www.myntra.com/{href}" if href and not href.startswith('http') else href
 
-                # Image URL often requires special handling (lazy loading, etc.)
-                # This is a simplified selector
-                img_tag = item.find('img', class_='img-responsive')
-                product['image_url'] = img_tag.get('src') if img_tag else "No Image"
-
+                product['image_url'] = img_tag.get('src')
                 products.append(product)
         except Exception as e:
-            print(f"Error parsing a product item: {e}")
+            print(f"Error parsing a Myntra product item: {e}")
             continue
 
     return products
 
 def scrape_snitch(query):
     """
-    Scrapes Snitch for a given search query.
+    Scrapes Snitch for a given search query using Playwright.
     """
     search_query = query.replace(' ', '+')
     url = f"https://www.snitch.co.in/search?q={search_query}"
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-    }
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        try:
+            page.goto(url, wait_until='domcontentloaded', timeout=30000)
+            page.wait_for_selector('div.product-card', timeout=10000)
+            html_content = page.content()
+        except Exception as e:
+            print(f"Error with Playwright navigation for Snitch: {e}")
+            browser.close()
+            return []
+        finally:
+            browser.close()
 
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching Snitch page: {e}")
-        return []
-
-    soup = BeautifulSoup(response.content, 'html.parser')
+    soup = BeautifulSoup(html_content, 'html.parser')
 
     products = []
-    # NOTE: These selectors are best-guess.
-    product_list = soup.find_all('div', class_='product-card') # Common class name
+    product_list = soup.select('div.product-card')
 
     for item in product_list[:5]:
         product = {}
         try:
-            # Best-guess selectors
-            product['brand'] = "Snitch" # Typically brand is not listed separately on own-brand sites
-            name_tag = item.find('h3', class_='product-card-title')
-            price_tag = item.find('span', class_='price-item--regular')
-            link_tag = item.find('a', class_='product-card-link')
-            img_tag = item.find('img', class_='product-card-image')
+            name_tag = item.select_one('.product-card__title')
+            price_tag = item.select_one('.price-item--regular')
+            link_tag = item.select_one('a.product-card-link')
+            img_tag = item.select_one('img.product-card-image')
 
             if all([name_tag, price_tag, link_tag, img_tag]):
+                product['brand'] = "Snitch"
                 product['name'] = name_tag.get_text(strip=True)
                 product['price'] = price_tag.get_text(strip=True)
 
                 href = link_tag.get('href')
                 product['link'] = f"https://www.snitch.co.in{href}" if href and href.startswith('/') else href
 
-                product['image_url'] = img_tag.get('src')
+                # Handle potential different image src attributes
+                img_src = img_tag.get('src') or img_tag.get('data-src')
+                product['image_url'] = f"https:{img_src}" if img_src and img_src.startswith('//') else img_src
                 products.append(product)
         except Exception as e:
             print(f"Error parsing a Snitch product item: {e}")
@@ -130,37 +124,40 @@ def scrape_xenpachi(query):
 
 def scrape_ajio(query):
     """
-    Scrapes Ajio for a given search query.
+    Scrapes Ajio for a given search query using Playwright.
     """
     search_query = query.replace(' ', '%20')
     url = f"https://www.ajio.com/search/?text={search_query}"
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-    }
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
+        try:
+            page.goto(url, wait_until='domcontentloaded', timeout=30000)
+            # Ajio has a specific product grid container
+            page.wait_for_selector('.products-list', timeout=10000)
+            html_content = page.content()
+        except Exception as e:
+            print(f"Error with Playwright navigation for Ajio: {e}")
+            browser.close()
+            return []
+        finally:
+            browser.close()
 
-    try:
-        response = requests.get(url, headers=headers)
-        response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching Ajio page: {e}")
-        return []
-
-    soup = BeautifulSoup(response.content, 'html.parser')
+    soup = BeautifulSoup(html_content, 'html.parser')
 
     products = []
-    # NOTE: These selectors are best-guess based on common structures, as direct inspection is blocked.
-    # This will likely need refinement.
-    product_list = soup.find_all('div', class_='item-grid')
+    # Selector based on inspection of Ajio's structure
+    product_list = soup.select('div.item.product-card')
 
     for item in product_list[:5]:
         product = {}
         try:
-            brand = item.find('div', class_='brand')
-            name = item.find('div', class_='name')
-            price_info = item.find('span', class_='price')
+            brand = item.select_one('div.brand')
+            name = item.select_one('div.nameCls')
+            price_info = item.select_one('span.price')
             link_tag = item.find('a')
-            img_tag = item.find('img')
+            img_tag = item.select_one('img.ril-lazy-img-loaded')
 
             if all([brand, name, price_info, link_tag, img_tag]):
                 product['brand'] = brand.get_text(strip=True)
