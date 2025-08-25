@@ -8,7 +8,15 @@
         <h2>Search for Products</h2>
         <form action="{{ url_for('main.search') }}" method="GET">
             <input type="text" name="query" placeholder="e.g., blue blazer" required>
-            <button type="submit">Search on Myntra (PoC)</button>
+            <select name="store">
+                <option value="myntra">Myntra</option>
+                <option value="ajio">Ajio</option>
+                <option value="snitch">Snitch</option>
+                <option value="thesouledstore">The Souled Store</option>
+                <option value="comicsense">Comicsense</option>
+                <option value="xenpachi">Xenpachi</option>
+            </select>
+            <button type="submit">Search</button>
         </form>
     </div>
     <hr>

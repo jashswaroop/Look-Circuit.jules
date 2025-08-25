@@ -1,0 +1,41 @@
+{
+  "body_shapes": {
+    "Pear": {
+      "summary": "Wider hips and thighs with a smaller bust and narrower shoulders. The goal is to emphasize the upper body and slim the lower body.",
+      "recommendations": {
+        "tops": {
+          "do": ["Fitted tops", "Nipped tops", "Cropped tops", "Tops with horizontal stripes", "Tops with embellishments around bust/shoulders"],
+          "dont": ["Tops that extend past the hips", "Peplum tops", "Tops with hip details"]
+        },
+        "necklines": {
+          "do": ["Square neckline", "Bateau neckline", "Sabrina neckline", "Off-the-shoulder", "Cowl neck", "Big collars", "Lace trims", "Ruffles on top"],
+          "dont": ["Narrow necklines", "Long necklines"]
+        },
+        "sleeves": {
+          "do": ["Flutter sleeves", "Bell sleeves", "Batwing sleeves", "Shoulder pads", "Puff sleeves", "Cap sleeves"],
+          "dont": ["Clingy long sleeves that add no shoulder volume"]
+        },
+        "jackets": {
+          "do": ["Cropped jackets", "Mid-thigh length jackets", "Jackets with bust/neckline details", "Darker color jackets"],
+          "dont": ["Jackets that end right at the hip", "Jackets with hip pockets"]
+        },
+        "trousers": {
+          "do": ["Flat-fronted", "Bootleg cut", "Full leg line", "Mid-rise", "High-rise", "Dark colors"],
+          "dont": ["Skinny fit", "Tapered leg", "Low-rise", "Details like whiskering or big pockets"]
+        },
+        "jeans": {
+          "do": ["Straight leg", "Bootcut", "Trouser-cut", "Flare", "Mid-rise", "High-rise", "Dark wash"],
+          "dont": ["Skinny jeans", "Distressed denim", "Embellished pockets", "Light wash"]
+        },
+        "skirts": {
+          "do": ["A-line skirts", "Bias skirts", "Knee-length", "Mid-calf length"],
+          "dont": ["Too-full skirts", "Frilly tiers", "Skirts with heavy horizontal details"]
+        },
+        "dresses": {
+          "do": ["A-line dresses", "X-line dresses", "Dresses that emphasize the waist"],
+          "dont": ["Straight cut dresses", "Dropped waist dresses", "Thick fabric dresses"]
+        }
+      }
+    }
+  }
+}

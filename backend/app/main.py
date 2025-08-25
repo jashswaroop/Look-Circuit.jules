@@ -4,7 +4,8 @@ from werkzeug.utils import secure_filename
 import os
 from .analysis import detect_face_shape, analyze_skin_tone
 from .models import UserImage
-from .scraper import scrape_myntra
+from .scraper import scrape_myntra, scrape_ajio, scrape_snitch, scrape_thesouledstore, scrape_comicsense, scrape_xenpachi
+from .recommender import generate_recommendations
 from . import db
 
 main = Blueprint('main', __name__)
@@ -134,14 +135,40 @@ def analysis():
 @login_required
 def search():
     query = request.args.get('query')
-    if not query:
-        flash('Please enter a search query.', 'danger')
+    store = request.args.get('store')
+
+    if not query or not store:
+        flash('Please enter a search query and select a store.', 'danger')
         return redirect(url_for('main.dashboard'))
 
-    # For PoC, we only scrape Myntra
-    products = scrape_myntra(query)
+    products = []
+    if store == 'myntra':
+        products = scrape_myntra(query)
+    elif store == 'ajio':
+        products = scrape_ajio(query)
+    elif store == 'snitch':
+        products = scrape_snitch(query)
+    elif store == 'thesouledstore':
+        products = scrape_thesouledstore(query)
+    elif store == 'comicsense':
+        products = scrape_comicsense(query)
+    elif store == 'xenpachi':
+        products = scrape_xenpachi(query)
 
     if not products:
-        flash(f'No results found for "{query}" on Myntra.', 'info')
+        flash(f'No results found for "{query}" on {store.title()}.', 'info')
 
-    return render_template('search_results.html', title=f'Search Results for "{query}"', products=products, query=query)
+    return render_template('search_results.html', title=f'Search Results for "{query}"', products=products, query=query, store=store)
+
+@main.route('/recommendations')
+@login_required
+def recommendations():
+    # Create a user profile dict from the current_user object
+    user_profile = {
+        'body_shape': current_user.body_shape
+        # We can add more profile attributes here later
+    }
+
+    recs = generate_recommendations(user_profile)
+
+    return render_template('recommendations.html', title='Your Recommendations', recommendations=recs)

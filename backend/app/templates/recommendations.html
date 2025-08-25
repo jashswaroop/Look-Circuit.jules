@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div>
+        <h2>Personalized Recommendations</h2>
+
+        {% if recommendations and not recommendations.error %}
+            <p>Based on your profile, here are some styling tips to help you look your best!</p>
+            <h3>Summary: {{ recommendations.summary }}</h3>
+
+            {% for category, recs in recommendations.recommendations.items() %}
+                <h4>{{ category|title }}</h4>
+                <div style="display: flex; gap: 2rem;">
+                    <div style="flex: 1; border: 1px solid green; padding: 1rem; border-radius: 5px;">
+                        <h5>Do</h5>
+                        <ul>
+                            {% for item in recs.do %}
+                                <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div style="flex: 1; border: 1px solid red; padding: 1rem; border-radius: 5px;">
+                        <h5>Don't</h5>
+                        <ul>
+                            {% for item in recs.dont %}
+                                <li>{{ item }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+
+        {% else %}
+            <p>Could not generate recommendations. Please make sure you have filled out your body shape in your <a href="{{ url_for('main.profile') }}">profile</a>.</p>
+            {% if recommendations.error %}
+                <p><strong>Error:</strong> {{ recommendations.error }}</p>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock content %}

@@ -66,3 +66,73 @@ def scrape_myntra(query):
             continue
 
     return products
+
+def scrape_snitch(query):
+    """
+    Scrapes Snitch for a given search query.
+    NOTE: This is a placeholder and will need to be implemented.
+    """
+    print(f"Scraping Snitch for: {query}")
+    return []
+
+def scrape_thesouledstore(query):
+    print(f"Scraping The Souled Store for: {query}")
+    return []
+
+def scrape_comicsense(query):
+    print(f"Scraping Comicsense for: {query}")
+    return []
+
+def scrape_xenpachi(query):
+    print(f"Scraping Xenpachi for: {query}")
+    return []
+
+def scrape_ajio(query):
+    """
+    Scrapes Ajio for a given search query.
+    """
+    search_query = query.replace(' ', '%20')
+    url = f"https://www.ajio.com/search/?text={search_query}"
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching Ajio page: {e}")
+        return []
+
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    products = []
+    # NOTE: These selectors are best-guess based on common structures, as direct inspection is blocked.
+    # This will likely need refinement.
+    product_list = soup.find_all('div', class_='item-grid')
+
+    for item in product_list[:5]:
+        product = {}
+        try:
+            brand = item.find('div', class_='brand')
+            name = item.find('div', class_='name')
+            price_info = item.find('span', class_='price')
+            link_tag = item.find('a')
+            img_tag = item.find('img')
+
+            if all([brand, name, price_info, link_tag, img_tag]):
+                product['brand'] = brand.get_text(strip=True)
+                product['name'] = name.get_text(strip=True)
+                product['price'] = price_info.get_text(strip=True)
+
+                href = link_tag.get('href')
+                product['link'] = f"https://www.ajio.com{href}" if href and href.startswith('/') else href
+
+                product['image_url'] = img_tag.get('src')
+                products.append(product)
+        except Exception as e:
+            print(f"Error parsing an Ajio product item: {e}")
+            continue
+
+    return products
