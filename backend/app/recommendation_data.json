@@ -4,11 +4,26 @@
       "summary": "Wider hips and thighs with a smaller bust and narrower shoulders. The goal is to emphasize the upper body and slim the lower body.",
       "recommendations": {
         "tops": {
-          "do": ["Fitted tops", "Nipped tops", "Cropped tops", "Tops with horizontal stripes", "Tops with embellishments around bust/shoulders"],
+          "do": [
+            {"item": "Fitted tops", "style_tags": ["classic"]},
+            {"item": "Nipped tops", "style_tags": ["classic"]},
+            {"item": "Cropped tops", "style_tags": ["trendy", "adventurous"]},
+            {"item": "Tops with horizontal stripes", "style_tags": ["classic"]},
+            {"item": "Tops with embellishments around bust/shoulders", "style_tags": ["trendy"]}
+          ],
           "dont": ["Tops that extend past the hips", "Peplum tops", "Tops with hip details"]
         },
         "necklines": {
-          "do": ["Square neckline", "Bateau neckline", "Sabrina neckline", "Off-the-shoulder", "Cowl neck", "Big collars", "Lace trims", "Ruffles on top"],
+          "do": [
+            {"item": "Square neckline", "style_tags": ["classic"]},
+            {"item": "Bateau neckline", "style_tags": ["classic"]},
+            {"item": "Sabrina neckline", "style_tags": ["classic"]},
+            {"item": "Off-the-shoulder", "style_tags": ["trendy", "adventurous"]},
+            {"item": "Cowl neck", "style_tags": ["classic"]},
+            {"item": "Big collars", "style_tags": ["trendy"]},
+            {"item": "Lace trims", "style_tags": ["classic", "trendy"]},
+            {"item": "Ruffles on top", "style_tags": ["trendy"]}
+          ],
           "dont": ["Narrow necklines", "Long necklines"]
         },
         "sleeves": {

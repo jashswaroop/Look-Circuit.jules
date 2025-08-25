@@ -163,13 +163,7 @@ def search():
 @main.route('/recommendations')
 @login_required
 def recommendations():
-    # Create a user profile dict from the current_user object
-    user_profile = {
-        'body_shape': current_user.body_shape
-        # We can add more profile attributes here later
-    }
-
-    recs = generate_recommendations(user_profile)
+    recs = generate_recommendations(current_user)
 
     return render_template('recommendations.html', title='Your Recommendations', recommendations=recs)
 
