@@ -70,10 +70,51 @@ def scrape_myntra(query):
 def scrape_snitch(query):
     """
     Scrapes Snitch for a given search query.
-    NOTE: This is a placeholder and will need to be implemented.
     """
-    print(f"Scraping Snitch for: {query}")
-    return []
+    search_query = query.replace(' ', '+')
+    url = f"https://www.snitch.co.in/search?q={search_query}"
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching Snitch page: {e}")
+        return []
+
+    soup = BeautifulSoup(response.content, 'html.parser')
+
+    products = []
+    # NOTE: These selectors are best-guess.
+    product_list = soup.find_all('div', class_='product-card') # Common class name
+
+    for item in product_list[:5]:
+        product = {}
+        try:
+            # Best-guess selectors
+            product['brand'] = "Snitch" # Typically brand is not listed separately on own-brand sites
+            name_tag = item.find('h3', class_='product-card-title')
+            price_tag = item.find('span', class_='price-item--regular')
+            link_tag = item.find('a', class_='product-card-link')
+            img_tag = item.find('img', class_='product-card-image')
+
+            if all([name_tag, price_tag, link_tag, img_tag]):
+                product['name'] = name_tag.get_text(strip=True)
+                product['price'] = price_tag.get_text(strip=True)
+
+                href = link_tag.get('href')
+                product['link'] = f"https://www.snitch.co.in{href}" if href and href.startswith('/') else href
+
+                product['image_url'] = img_tag.get('src')
+                products.append(product)
+        except Exception as e:
+            print(f"Error parsing a Snitch product item: {e}")
+            continue
+
+    return products
 
 def scrape_thesouledstore(query):
     print(f"Scraping The Souled Store for: {query}")

@@ -14,7 +14,14 @@
                         <h5>Do</h5>
                         <ul>
                             {% for item in recs.do %}
-                                <li>{{ item }}</li>
+                                <li>
+                                    {{ item }}
+                                    <form action="{{ url_for('main.search') }}" method="GET" style="display: inline; margin-left: 10px;">
+                                        <input type="hidden" name="query" value="{{ item }}">
+                                        <input type="hidden" name="store" value="myntra"> <!-- Hardcoded for now -->
+                                        <button type="submit" style="font-size: 0.7em;">Search</button>
+                                    </form>
+                                </li>
                             {% endfor %}
                         </ul>
                     </div>

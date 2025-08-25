@@ -36,6 +36,106 @@
           "dont": ["Straight cut dresses", "Dropped waist dresses", "Thick fabric dresses"]
         }
       }
+    },
+    "Rectangle": {
+      "summary": "Shoulders, bust, and hips are around the same size, with a straight waist. The goal is to create curves and a more defined waist.",
+      "recommendations": {
+        "tops": {
+          "do": ["Tops with nipped or belted waists", "Peplum tops", "Tops with details at the bust (pockets, ruffles)", "Tops that add volume to shoulders and hips"],
+          "dont": ["Straight-cut tops", "Boxy tops", "Anything that hides the waist"]
+        },
+        "necklines": {
+          "do": ["Scoop neck", "Sweetheart neckline", "V-neck", "Collared shirts"],
+          "dont": ["Square necklines", "Boat necks", "Anything that emphasizes straight lines"]
+        },
+        "sleeves": {
+          "do": ["Puff sleeves", "Cap sleeves", "Sleeves with volume"],
+          "dont": ["Straight, tight-fitting sleeves"]
+        },
+        "jackets": {
+          "do": ["Belted jackets", "Jackets with a defined waist", "Long jackets that can be cinched"],
+          "dont": ["Boxy, straight-cut jackets"]
+        },
+        "trousers": {
+          "do": ["Flared trousers", "Wide-leg trousers", "Trousers with hip/thigh details or pockets", "Mid-rise"],
+          "dont": ["Straight-leg trousers that offer no shape"]
+        },
+        "jeans": {
+          "do": ["Bootcut", "Flare jeans", "Boyfriend jeans", "Jeans with back pocket details"],
+          "dont": ["Simple straight-leg jeans"]
+        },
+        "skirts": {
+          "do": ["A-line skirts", "Full circle skirts", "Tiered skirts", "Pencil skirts with a peplum top"],
+          "dont": ["Straight skirts", "Column skirts"]
+        },
+        "dresses": {
+          "do": ["A-line dresses", "X-line dresses", "Empire waist dresses", "Wrap dresses", "Dresses with belted waists"],
+          "dont": ["Straight-cut sheath dresses", "Shift dresses", "Bodycon dresses without shape"]
+        }
+      }
+    },
+    "Apple": {
+      "summary": "Fuller upper body with broader shoulders and a less defined waist. The goal is to elongate the torso and create a more defined waistline.",
+      "recommendations": {
+        "tops": {
+          "do": ["Flowy tops (tucked in)", "Tops with a V-neck", "Wrap tops", "Tops that fall below the hip"],
+          "dont": ["High necklines", "Crop tops", "Tops with details around the midsection"]
+        },
+        "dresses": {
+          "do": ["A-line dresses", "Empire waist dresses", "Wrap dresses", "Dresses with a V-neck"],
+          "dont": ["Bodycon dresses", "Dresses with a high waistline that cuts across the fullest part of the bust"]
+        },
+        "trousers": {
+          "do": ["Straight-leg", "Bootcut", "High-rise pants to create a waistline"],
+          "dont": ["Low-rise pants", "Pants with lots of detail at the waist"]
+        },
+        "jackets": {
+          "do": ["Single-breasted jackets", "A-line coats", "Jackets that hit at the hip or upper thigh"],
+          "dont": ["Double-breasted jackets", "Cropped jackets", "Bulky jackets"]
+        }
+      }
+    },
+    "Hourglass": {
+      "summary": "Balanced bust and hips with a clearly defined waist. The goal is to highlight your natural curves.",
+      "recommendations": {
+        "tops": {
+          "do": ["Fitted tops", "Wrap tops", "Peplum tops", "Tops that accentuate the waist"],
+          "dont": ["Boxy or shapeless tops", "High necklines that hide your curves"]
+        },
+        "dresses": {
+          "do": ["Wrap dresses", "Fit-and-flare dresses", "Bodycon dresses", "Belted dresses"],
+          "dont": ["Straight-cut or shapeless dresses (e.g., shift dresses)"]
+        },
+        "trousers": {
+          "do": ["High-waisted pants", "Wide-leg pants", "Bootcut", "Flared pants"],
+          "dont": ["Low-rise pants", "Overly baggy pants that hide the waist"]
+        },
+        "jackets": {
+          "do": ["Belted jackets", "Cropped jackets", "Jackets that nip in at the waist"],
+          "dont": ["Long, straight coats that hide your figure"]
+        }
+      }
+    },
+    "Inverted Triangle": {
+      "summary": "Broader shoulders and bust, with narrower hips. The goal is to add volume to the lower body to balance the upper body.",
+      "recommendations": {
+        "tops": {
+          "do": ["Simple, clean necklines (V-neck, scoop)", "Soft, draping fabrics", "Darker colored tops"],
+          "dont": ["Shoulder pads", "Puff sleeves", "Boat necks", "Wide necklines", "Tops with lots of upper body detail"]
+        },
+        "dresses": {
+          "do": ["A-line dresses", "Dresses that add volume at the hips (e.g., with pleats or gathers)"],
+          "dont": ["Dresses with puff sleeves or embellished tops"]
+        },
+        "trousers": {
+          "do": ["Wide-leg pants", "Flared pants", "Pants with details (pockets, prints)", "Brightly colored pants"],
+          "dont": ["Skinny jeans or tight trousers (if not balanced with a peplum top)"]
+        },
+        "skirts": {
+          "do": ["A-line skirts", "Full skirts", "Peplum skirts", "Skirts with volume"],
+          "dont": ["Tight pencil skirts"]
+        }
+      }
     }
   }
 }
