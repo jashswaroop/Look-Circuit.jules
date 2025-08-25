@@ -12,7 +12,15 @@
                         <h4>{{ product.brand }}</h4>
                         <p>{{ product.name }}</p>
                         <p><strong>{{ product.price }}</strong></p>
-                        <a href="{{ product.link }}" target="_blank">View on Myntra</a>
+                        <a href="{{ product.link }}" target="_blank">View on {{ store.title() }}</a>
+                        <form action="{{ url_for('main.save_item') }}" method="POST" style="margin-top: 10px;">
+                            <input type="hidden" name="product_name" value="{{ product.name }}">
+                            <input type="hidden" name="brand" value="{{ product.brand }}">
+                            <input type="hidden" name="price" value="{{ product.price }}">
+                            <input type="hidden" name="image_url" value="{{ product.image_url }}">
+                            <input type="hidden" name="product_link" value="{{ product.link }}">
+                            <button type="submit">Save to Wardrobe</button>
+                        </form>
                     </div>
                 {% endfor %}
             </div>

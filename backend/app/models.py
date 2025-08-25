@@ -48,3 +48,17 @@ class UserImage(db.Model):
 
     def __repr__(self):
         return f'<UserImage {self.filename}>'
+
+class WardrobeItem(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    product_name = db.Column(db.String(200), nullable=False)
+    brand = db.Column(db.String(100), nullable=False)
+    price = db.Column(db.String(50))
+    image_url = db.Column(db.String(500))
+    product_link = db.Column(db.String(500))
+    notes = db.Column(db.Text)
+    added_date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return f'<WardrobeItem {self.product_name}>'

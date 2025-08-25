@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div>
+        <h2>My Digital Wardrobe</h2>
+
+        {% if items %}
+            <p>Here are all the items you've saved.</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
+                {% for item in items %}
+                    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 5px;">
+                        <img src="{{ item.image_url }}" alt="{{ item.product_name }}" style="max-width: 100%; height: auto;">
+                        <h4>{{ item.brand }}</h4>
+                        <p>{{ item.product_name }}</p>
+                        <p><strong>{{ item.price }}</strong></p>
+                        <a href="{{ item.product_link }}" target="_blank">View Original Item</a>
+                        <div style="margin-top: 10px; border-top: 1px solid #eee; padding-top: 10px;">
+                            <p><strong>Notes:</strong> {{ item.notes or 'No notes yet.' }}</p>
+                            <form action="{{ url_for('main.edit_notes', item_id=item.id) }}" method="POST">
+                                <textarea name="notes" rows="2" cols="20" placeholder="Add a note...">{{ item.notes or '' }}</textarea>
+                                <button type="submit">Save Note</button>
+                            </form>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <form action="{{ url_for('main.delete_item', item_id=item.id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <button type="submit" style="background-color: #f44336; color: white;">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Your wardrobe is empty! Start searching for products and save your favorites.</p>
+        {% endif %}
+    </div>
+{% endblock content %}
