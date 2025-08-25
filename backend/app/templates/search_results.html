@@ -1,31 +1,42 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div>
-        <h2>Search Results for "{{ query }}"</h2>
-        <p>Showing top results from Myntra. (This is a Proof of Concept)</p>
+<div>
+    <h2 class="text-3xl font-bold mb-6">Search Results for "{{ query }}"</h2>
+    <p class="text-gray-600 mb-8">Showing top results from <span class="font-semibold">{{ store.title() }}</span>.</p>
 
-        {% if products %}
-            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem;">
-                {% for product in products %}
-                    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 5px;">
-                        <img src="{{ product.image_url }}" alt="{{ product.name }}" style="max-width: 100%; height: auto;">
-                        <h4>{{ product.brand }}</h4>
-                        <p>{{ product.name }}</p>
-                        <p><strong>{{ product.price }}</strong></p>
-                        <a href="{{ product.link }}" target="_blank">View on {{ store.title() }}</a>
-                        <form action="{{ url_for('main.save_item') }}" method="POST" style="margin-top: 10px;">
-                            <input type="hidden" name="product_name" value="{{ product.name }}">
-                            <input type="hidden" name="brand" value="{{ product.brand }}">
-                            <input type="hidden" name="price" value="{{ product.price }}">
-                            <input type="hidden" name="image_url" value="{{ product.image_url }}">
-                            <input type="hidden" name="product_link" value="{{ product.link }}">
-                            <button type="submit">Save to Wardrobe</button>
-                        </form>
+    {% if products %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {% for product in products %}
+                <div class="product-card">
+                    <div class="product-card-image-container">
+                        <img src="{{ product.image_url }}" alt="{{ product.name }}" class="product-card-image">
                     </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <p>No products found, or the scraper could not retrieve results.</p>
-        {% endif %}
-    </div>
+                    <div class="p-4 space-y-2">
+                        <h4 class="text-sm font-semibold text-gray-500 uppercase">{{ product.brand }}</h4>
+                        <p class="text-md font-medium text-gray-800 truncate">{{ product.name }}</p>
+                        <p class="text-lg font-bold text-gray-900">{{ product.price }}</p>
+                        <a href="{{ product.link }}" target="_blank" class="text-purple-600 hover:text-purple-800 text-sm font-medium">View on {{ store.title() }} &rarr;</a>
+
+                        <div class="pt-4">
+                            <form action="{{ url_for('main.save_item') }}" method="POST">
+                                <input type="hidden" name="product_name" value="{{ product.name }}">
+                                <input type="hidden" name="brand" value="{{ product.brand }}">
+                                <input type="hidden" name="price" value="{{ product.price }}">
+                                <input type="hidden" name="image_url" value="{{ product.image_url }}">
+                                <input type="hidden" name="product_link" value="{{ product.link }}">
+                                <button type="submit" class="btn-primary mt-2">Save to Wardrobe</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-16">
+            <h3 class="text-xl font-semibold text-gray-700">No products found for "{{ query }}" on {{ store.title() }}.</h3>
+            <p class="text-gray-500 mt-2">This might be due to the scraper needing an update or no results being available. Try another store or a different query.</p>
+            <a href="{{ url_for('main.dashboard') }}" class="mt-6 inline-block bg-gray-600 text-white px-6 py-2 rounded-md hover:bg-gray-700">Back to Dashboard</a>
+        </div>
+    {% endif %}
+</div>
 {% endblock content %}
