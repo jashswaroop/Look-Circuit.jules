@@ -3,9 +3,10 @@ from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 import os
 from .analysis import detect_face_shape, analyze_skin_tone
-from .models import UserImage, WardrobeItem
+from .models import UserImage, WardrobeItem, UserInteraction
 from .scraper import scrape_myntra, scrape_ajio, scrape_snitch, scrape_thesouledstore, scrape_comicsense, scrape_xenpachi
 from .recommender import generate_recommendations
+from .ml_engine import get_item_based_recommendations
 from . import db
 
 main = Blueprint('main', __name__)
@@ -163,9 +164,18 @@ def search():
 @main.route('/recommendations')
 @login_required
 def recommendations():
-    recs = generate_recommendations(current_user)
+    # Get rule-based recommendations
+    rule_based_recs = generate_recommendations(current_user)
 
-    return render_template('recommendations.html', title='Your Recommendations', recommendations=recs)
+    # Get ML-based recommendations
+    ml_recs = get_item_based_recommendations(current_user.id)
+
+    return render_template(
+        'recommendations.html',
+        title='Your Recommendations',
+        recommendations=rule_based_recs,
+        ml_recommendations=ml_recs
+    )
 
 @main.route('/wardrobe')
 @login_required
@@ -185,7 +195,17 @@ def save_item():
         product_link=request.form['product_link']
     )
     db.session.add(new_item)
+    db.session.commit() # Commit to get the new_item.id
+
+    # Log the interaction
+    interaction = UserInteraction(
+        user_id=current_user.id,
+        wardrobe_item_id=new_item.id,
+        interaction_type='save'
+    )
+    db.session.add(interaction)
     db.session.commit()
+
     flash('Item saved to your wardrobe!', 'success')
     return redirect(request.referrer or url_for('main.dashboard'))
 

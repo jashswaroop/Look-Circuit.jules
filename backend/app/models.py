@@ -62,3 +62,16 @@ class WardrobeItem(db.Model):
 
     def __repr__(self):
         return f'<WardrobeItem {self.product_name}>'
+
+class UserInteraction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    wardrobe_item_id = db.Column(db.Integer, db.ForeignKey('wardrobe_item.id'), nullable=False)
+    interaction_type = db.Column(db.String(50), nullable=False) # e.g., 'save', 'like', 'dislike'
+    interaction_date = db.Column(db.DateTime, default=datetime.utcnow)
+
+    user = db.relationship('User', backref=db.backref('interactions', lazy=True))
+    wardrobe_item = db.relationship('WardrobeItem', backref=db.backref('interactions', lazy=True))
+
+    def __repr__(self):
+        return f'<UserInteraction {self.user_id} - {self.interaction_type} - {self.wardrobe_item_id}>'

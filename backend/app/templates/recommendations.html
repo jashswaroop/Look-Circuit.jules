@@ -53,4 +53,40 @@
             {% endif %}
         {% endif %}
     </div>
+
+    <hr class="my-12">
+
+    <div>
+        <h2 class="text-2xl font-bold mb-4">Because You Liked...</h2>
+        {% if ml_recommendations %}
+            <p class="text-gray-600 mb-8">Based on items you've saved to your wardrobe, you might also like these:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {% for item in ml_recommendations %}
+                    <div class="product-card">
+                        <div class="product-card-image-container">
+                            <img src="{{ item.image_url }}" alt="{{ item.product_name }}" class="product-card-image">
+                        </div>
+                        <div class="p-4 space-y-2">
+                            <h4 class="text-sm font-semibold text-gray-500 uppercase">{{ item.brand }}</h4>
+                            <p class="text-md font-medium text-gray-800 truncate">{{ item.product_name }}</p>
+                            <p class="text-lg font-bold text-gray-900">{{ item.price }}</p>
+                            <a href="{{ item.product_link }}" target="_blank" class="text-purple-600 hover:text-purple-800 text-sm font-medium">View Original Item &rarr;</a>
+                            <div class="pt-4">
+                                <form action="{{ url_for('main.save_item') }}" method="POST">
+                                    <input type="hidden" name="product_name" value="{{ item.product_name }}">
+                                    <input type="hidden" name="brand" value="{{ item.brand }}">
+                                    <input type="hidden" name="price" value="{{ item.price }}">
+                                    <input type="hidden" name="image_url" value="{{ item.image_url }}">
+                                    <input type="hidden" name="product_link" value="{{ item.product_link }}">
+                                    <button type="submit" class="btn-primary mt-2">Save to Wardrobe</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-600">Save more items to your wardrobe to get personalized, learned recommendations!</p>
+        {% endif %}
+    </div>
 {% endblock content %}
