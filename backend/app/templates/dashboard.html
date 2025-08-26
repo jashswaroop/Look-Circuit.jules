@@ -1,14 +1,95 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Dashboard</h1>
-    <p>Welcome, {{ current_user.username }}!</p>
-    <p>This is your main dashboard. From here you can access all the features.</p>
-
-    <div>
-        <h2>Search for Products</h2>
-        <form action="{{ url_for('main.search') }}" method="GET">
-            <input type="text" name="query" placeholder="e.g., blue blazer" required>
-            <select name="store">
+<div class="container mx-auto px-4 py-8">
+    <!-- Welcome Section -->
+    <div class="relative overflow-hidden rounded-2xl mb-8" data-aos="fade-up">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary-600 via-purple-500 to-accent-500 animate-gradient-x"></div>
+        <div class="relative p-8 md:p-12 text-white">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div>
+                    <h1 class="text-3xl md:text-4xl font-bold mb-2 font-poppins">Welcome back, {{ current_user.username }}!</h1>
+                    <p class="text-white/80 max-w-xl">
+                        Your personal fashion dashboard is ready. Explore your style recommendations, analyze outfits, and discover new fashion trends.
+                    </p>
+                </div>
+                <div class="mt-6 md:mt-0">
+                    <a href="{{ url_for('main.analysis') }}" class="bg-white text-primary-600 py-3 px-6 rounded-xl hover:bg-white/90 hover:shadow-lg transition-all duration-300 inline-flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span>Analyze New Photo</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" data-aos="fade-up" data-aos-delay="100">
+        <div class="bg-white/70 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-gray-500 text-sm">Style Score</p>
+                    <h3 class="text-2xl font-bold font-poppins">92<span class="text-sm text-accent-500 ml-1">+5</span></h3>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white/70 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-accent-100 flex items-center justify-center mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-gray-500 text-sm">Wardrobe Items</p>
+                    <h3 class="text-2xl font-bold font-poppins">24</h3>
+                </div>
+            </div>
+        </div>
+        
+        <div class="bg-white/70 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+            <div class="flex items-center">
+                <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-gray-500 text-sm">Trending Style</p>
+                    <h3 class="text-2xl font-bold font-poppins">Streetwear</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Search Section with Glassmorphism -->
+    <div class="mb-8 bg-white/50 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-gray-100" data-aos="fade-up">
+        <h2 class="text-2xl font-bold mb-4 font-poppins flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            Search for Products
+        </h2>
+        <form action="{{ url_for('main.search') }}" method="GET" class="flex flex-col md:flex-row gap-3">
+            <div class="flex-grow relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <input type="text" name="query" placeholder="e.g., blue blazer" required 
+                    class="pl-10 w-full py-3 px-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300">
+            </div>
+            <select name="store" 
+                class="py-3 px-4 rounded-xl border border-gray-200 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-300 bg-white">
                 <option value="myntra">Myntra</option>
                 <option value="ajio">Ajio</option>
                 <option value="snitch">Snitch</option>
@@ -16,17 +97,120 @@
                 <option value="comicsense">Comicsense</option>
                 <option value="xenpachi">Xenpachi</option>
             </select>
-            <button type="submit">Search</button>
+            <button type="submit" 
+                class="bg-gradient-to-r from-primary-600 to-primary-700 text-white py-3 px-6 rounded-xl hover:shadow-lg hover:translate-y-[-2px] transition-all duration-300 flex items-center justify-center">
+                <span>Search</span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            </button>
         </form>
     </div>
-    <hr>
-    <!-- We will add cards and links to other sections here later -->
-    <div>
-        <h2>Quick Actions</h2>
-        <ul>
-            <li><a href="{{ url_for('main.analysis') }}">Analyze a Photo</a></li>
-            <li><a href="{{ url_for('main.style_guide') }}">Update Your Style Guide</a></li>
-            <li><a href="{{ url_for('main.profile') }}">Update Profile</a></li>
-        </ul>
+    
+    <!-- Quick Actions Grid -->
+    <div class="mb-8" data-aos="fade-up">
+        <h2 class="text-2xl font-bold mb-4 font-poppins flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            Quick Actions
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="{{ url_for('main.analysis') }}" class="group">
+                <div class="bg-white/50 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:translate-y-[-2px] flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center mb-4 group-hover:bg-primary-200 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 font-poppins">Analyze a Photo</h3>
+                    <p class="text-gray-600">Upload an outfit and get AI-powered style analysis</p>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('main.style_guide') }}" class="group">
+                <div class="bg-white/50 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:translate-y-[-2px] flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 rounded-full bg-accent-100 flex items-center justify-center mb-4 group-hover:bg-accent-200 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 font-poppins">Style Guide</h3>
+                    <p class="text-gray-600">Update your preferences and get personalized style tips</p>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('main.profile') }}" class="group">
+                <div class="bg-white/50 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md hover:translate-y-[-2px] flex flex-col items-center text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 font-poppins">Update Profile</h3>
+                    <p class="text-gray-600">Manage your account settings and preferences</p>
+                </div>
+            </a>
+        </div>
     </div>
+    
+    <!-- Recent Activity Timeline -->
+    <div class="mb-8 bg-white/50 backdrop-blur-md p-6 rounded-2xl shadow-sm border border-gray-100" data-aos="fade-up">
+        <h2 class="text-2xl font-bold mb-4 font-poppins flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            Recent Activity
+        </h2>
+        <div class="space-y-4">
+            <div class="flex">
+                <div class="flex flex-col items-center mr-4">
+                    <div class="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        </svg>
+                    </div>
+                    <div class="h-full w-0.5 bg-gray-200 mt-2"></div>
+                </div>
+                <div class="pb-6">
+                    <p class="text-sm text-gray-500">Today</p>
+                    <p class="font-medium">You analyzed a new outfit photo</p>
+                    <p class="text-gray-600 text-sm mt-1">AI suggested 3 matching accessories</p>
+                </div>
+            </div>
+            
+            <div class="flex">
+                <div class="flex flex-col items-center mr-4">
+                    <div class="w-10 h-10 rounded-full bg-accent-100 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                    </div>
+                    <div class="h-full w-0.5 bg-gray-200 mt-2"></div>
+                </div>
+                <div class="pb-6">
+                    <p class="text-sm text-gray-500">Yesterday</p>
+                    <p class="font-medium">Added 2 items to your wardrobe</p>
+                    <p class="text-gray-600 text-sm mt-1">Black jeans and white sneakers</p>
+                </div>
+            </div>
+            
+            <div class="flex">
+                <div class="flex flex-col items-center mr-4">
+                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-sm text-gray-500">3 days ago</p>
+                    <p class="font-medium">Updated your style preferences</p>
+                    <p class="text-gray-600 text-sm mt-1">Added streetwear to your preferred styles</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

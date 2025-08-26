@@ -1,17 +1,96 @@
 {% extends "layout.html" %}
 {% block content %}
-    <div>
-        <h2>Analyze Your Photo</h2>
-        <p>Upload a clear, front-facing photo of yourself to analyze your face shape and skin tone.</p>
-        <form method="POST" action="" enctype="multipart/form-data">
-            <div>
-                <label for="file">Select image:</label>
-                <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/jpg">
-            </div>
-            <br>
-            <div>
-                <button type="submit">Analyze</button>
-            </div>
-        </form>
+<div class="container mx-auto px-4 py-8">
+    <!-- Header Section -->
+    <div class="mb-8 text-center" data-aos="fade-up">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 font-poppins bg-gradient-to-r from-primary-600 to-accent-500 bg-clip-text text-transparent">
+            AI-Powered Style Analysis
+        </h1>
+        <p class="text-gray-600 max-w-2xl mx-auto">
+            Upload a clear photo of your outfit or yourself to get personalized style recommendations, color analysis, and fashion insights.
+        </p>
     </div>
+    
+    <!-- Upload Section with Glassmorphism -->
+    <div class="max-w-2xl mx-auto mb-12" data-aos="fade-up" data-aos-delay="100">
+        <div class="relative overflow-hidden rounded-2xl">
+            <div class="absolute inset-0 bg-gradient-to-r from-primary-600/20 via-purple-500/20 to-accent-500/20 animate-gradient-x"></div>
+            <div class="relative bg-white/70 backdrop-blur-md p-8 rounded-2xl shadow-sm border border-gray-100">
+                <form method="POST" action="" enctype="multipart/form-data" class="space-y-6">
+                    <div class="text-center mb-6">
+                        <div class="w-20 h-20 rounded-full bg-primary-100 flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold font-poppins">Upload Your Photo</h2>
+                        <p class="text-gray-600 mt-2">Drag and drop or click to browse</p>
+                    </div>
+                    
+                    <div class="relative border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-primary-500 transition-all duration-300 cursor-pointer bg-white/50">
+                        <input type="file" id="file" name="file" accept="image/png, image/jpeg, image/jpg" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                        <div class="space-y-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <p class="text-sm text-gray-500" id="file-name">No file selected</p>
+                            <p class="text-xs text-gray-400">Supported formats: JPG, JPEG, PNG</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-primary-600 to-accent-500 text-white py-3 px-6 rounded-xl hover:shadow-lg hover:translate-y-[-2px] transition-all duration-300 flex items-center justify-center">
+                            <span>Analyze Now</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features Section -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12" data-aos="fade-up" data-aos-delay="200">
+        <div class="bg-white/50 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+            <div class="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2 font-poppins">Color Analysis</h3>
+            <p class="text-gray-600">Get personalized color palette recommendations that complement your skin tone and style preferences.</p>
+        </div>
+        
+        <div class="bg-white/50 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+            <div class="w-12 h-12 rounded-full bg-accent-100 flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-accent-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2 font-poppins">Style Identification</h3>
+            <p class="text-gray-600">Our AI identifies your current style and suggests complementary fashion elements to enhance your look.</p>
+        </div>
+        
+        <div class="bg-white/50 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100 transition-all duration-300 hover:shadow-md">
+            <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-2 font-poppins">Outfit Recommendations</h3>
+            <p class="text-gray-600">Get personalized outfit suggestions based on your analyzed photo and current fashion trends.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // File upload preview
+    document.getElementById('file').addEventListener('change', function(e) {
+        const fileName = e.target.files[0] ? e.target.files[0].name : 'No file selected';
+        document.getElementById('file-name').textContent = fileName;
+    });
+</script>
 {% endblock content %}
