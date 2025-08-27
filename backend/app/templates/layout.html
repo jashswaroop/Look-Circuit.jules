@@ -11,7 +11,57 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    <!-- Optimized Lottie Player with preconnect for performance -->
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://assets5.lottiefiles.com">
+    <link rel="preconnect" href="https://assets3.lottiefiles.com">
+    
+    <!-- Single Lottie Player script with custom element check -->
+    <script>
+        // Check if lottie-player is already defined before loading scripts
+        if (!customElements.get('lottie-player')) {
+            const script = document.createElement('script');
+            script.src = "https://unpkg.com/@lottiefiles/lottie-player@1.5.7/dist/lottie-player.js";
+            document.head.appendChild(script);
+        }
+    </script>
+    
+    <!-- Custom Lottie Player Optimization -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Lazy load lottie animations that are not in viewport
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const player = entry.target;
+                    if (entry.isIntersecting) {
+                        if (!player.hasAttribute('data-loaded')) {
+                            player.setAttribute('data-loaded', 'true');
+                            if (player.hasAttribute('autoplay')) {
+                                setTimeout(() => {
+                                    if (player.play && typeof player.play === 'function') {
+                                        player.play();
+                                    }
+                                }, 100);
+                            }
+                        }
+                    } else {
+                        // Pause when not in viewport to save resources
+                        if (player.pause && typeof player.pause === 'function') {
+                            player.pause();
+                        }
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            // Observe all lottie players
+            setTimeout(() => {
+                document.querySelectorAll('lottie-player').forEach(player => {
+                    observer.observe(player);
+                });
+            }, 500);
+        });
+    </script>
     <script>
         tailwind.config = {
             theme: {
@@ -49,11 +99,39 @@
                     animation: {
                         'float': 'float 3s ease-in-out infinite',
                         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'spin-slow': 'spin 3s linear infinite',
+                        'fade-in': 'fadeIn 0.8s ease-out',
+                        'slide-up': 'slideUp 0.6s ease-out',
+                        'scale-in': 'scaleIn 0.5s ease-out',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'float-delayed': 'float 3s ease-in-out infinite 1s',
+                        'rotate-slow': 'rotate 8s linear infinite',
                     },
                     keyframes: {
                         float: {
                             '0%, 100%': { transform: 'translateY(0)' },
                             '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.9)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)' },
+                            '100%': { boxShadow: '0 0 40px rgba(139, 92, 246, 0.6)' },
+                        },
+                        rotate: {
+                            '0%': { transform: 'rotate(0deg)' },
+                            '100%': { transform: 'rotate(360deg)' },
                         }
                     },
                 }
