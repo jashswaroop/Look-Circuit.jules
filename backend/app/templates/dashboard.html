@@ -5,19 +5,55 @@
     <p>This is your main dashboard. From here you can access all the features.</p>
 
     <div>
-        <h2>Search for Products</h2>
-        <form action="{{ url_for('main.search') }}" method="GET">
-            <input type="text" name="query" placeholder="e.g., blue blazer" required>
-            <select name="store">
-                <option value="myntra" disabled>Myntra (Unavailable)</option>
-                <option value="ajio" disabled>Ajio (Unavailable)</option>
-                <option value="snitch" disabled>Snitch (Unavailable)</option>
-                <option value="thesouledstore" disabled>The Souled Store (Unavailable)</option>
-                <option value="comicsense" disabled>Comicsense (Unavailable)</option>
-                <option value="xenpachi" disabled>Xenpachi (Unavailable)</option>
-            </select>
-            <button type="submit">Search</button>
-        </form>
+        <h2 class="text-2xl font-bold mb-4">Search for Products</h2>
+        <p class="text-gray-600 mb-4">Due to anti-bot measures on e-commerce sites, direct scraping is not possible. Instead, you can search for items directly on these sites:</p>
+        <div class="space-y-4" id="search-container">
+            <input type="text" id="search-query-input" placeholder="e.g., blue blazer" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <button onclick="performSearch('myntra')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Search on Myntra</button>
+                <button onclick="performSearch('ajio')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Search on Ajio</button>
+                <button onclick="performSearch('snitch')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Search on Snitch</button>
+                <button onclick="performSearch('thesouledstore')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Search on The Souled Store</button>
+                <button onclick="performSearch('comicsense')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Search on Comicsense</button>
+                <button onclick="performSearch('xenpachi')" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded">Search on Xenpachi</button>
+            </div>
+        </div>
+        <script>
+            function performSearch(store) {
+                const query = document.getElementById('search-query-input').value;
+                if (!query) {
+                    alert('Please enter a search query.');
+                    return;
+                }
+
+                let url;
+                const encodedQuery = encodeURIComponent(query);
+
+                switch(store) {
+                    case 'myntra':
+                        url = `https://www.myntra.com/${encodedQuery.replace(/%20/g, '-')}`;
+                        break;
+                    case 'ajio':
+                        url = `https://www.ajio.com/search/?text=${encodedQuery}`;
+                        break;
+                    case 'snitch':
+                        url = `https://www.snitch.co.in/search?q=${encodedQuery}`;
+                        break;
+                    case 'thesouledstore':
+                        url = `https://www.thesouledstore.com/search?q=${encodedQuery}`;
+                        break;
+                    case 'comicsense':
+                        url = `https://comicsense.in/search?q=${encodedQuery}`;
+                        break;
+                    case 'xenpachi':
+                         url = `https://www.xenpachi.in/search?q=${encodedQuery}`;
+                        break;
+                    default:
+                        return;
+                }
+                window.open(url, '_blank');
+            }
+        </script>
     </div>
     <hr>
     <!-- We will add cards and links to other sections here later -->

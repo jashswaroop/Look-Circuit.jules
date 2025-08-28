@@ -2,12 +2,13 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 import os
+import json
+from . import db
+from .models import User, UserImage
+from .forms import UpdateProfileForm, StyleGuideForm, RegistrationForm, LoginForm
 from .analysis import detect_face_shape, analyze_skin_tone
-from .models import UserImage, WardrobeItem, UserInteraction
-from .scraper import scrape_myntra, scrape_ajio, scrape_snitch, scrape_thesouledstore, scrape_comicsense, scrape_xenpachi
 from .recommender import generate_recommendations
 from .ml_engine import get_item_based_recommendations
-from . import db
 
 main = Blueprint('main', __name__)
 
@@ -15,10 +16,6 @@ main = Blueprint('main', __name__)
 @main.route('/index')
 def index():
     return render_template('index.html')
-
-from .forms import UpdateProfileForm, StyleGuideForm
-from . import db
-import json
 
 @main.route('/dashboard')
 @login_required
@@ -107,16 +104,13 @@ def analysis():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
-            # Need to get the app context to get the upload folder
             from flask import current_app
             filepath = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
             file.save(filepath)
 
-            # Perform analysis
             face_shape = detect_face_shape(filepath)
             skin_tone = analyze_skin_tone(filepath)
 
-            # Save to database
             image_record = UserImage(
                 user_id=current_user.id,
                 filename=filename,
@@ -132,42 +126,10 @@ def analysis():
 
     return render_template('analysis.html', title='Analyze Photo')
 
-@main.route('/search')
-@login_required
-def search():
-    query = request.args.get('query')
-    store = request.args.get('store')
-
-    if not query or not store:
-        flash('Please enter a search query and select a store.', 'danger')
-        return redirect(url_for('main.dashboard'))
-
-    products = []
-    if store == 'myntra':
-        products = scrape_myntra(query)
-    elif store == 'ajio':
-        products = scrape_ajio(query)
-    elif store == 'snitch':
-        products = scrape_snitch(query)
-    elif store == 'thesouledstore':
-        products = scrape_thesouledstore(query)
-    elif store == 'comicsense':
-        products = scrape_comicsense(query)
-    elif store == 'xenpachi':
-        products = scrape_xenpachi(query)
-
-    if not products:
-        flash(f'No results found for "{query}" on {store.title()}.', 'info')
-
-    return render_template('search_results.html', title=f'Search Results for "{query}"', products=products, query=query, store=store)
-
 @main.route('/recommendations')
 @login_required
 def recommendations():
-    # Get rule-based recommendations
     rule_based_recs = generate_recommendations(current_user)
-
-    # Get ML-based recommendations
     ml_recs = get_item_based_recommendations(current_user.id)
 
     return render_template(
@@ -176,60 +138,3 @@ def recommendations():
         recommendations=rule_based_recs,
         ml_recommendations=ml_recs
     )
-
-@main.route('/wardrobe')
-@login_required
-def wardrobe():
-    items = WardrobeItem.query.filter_by(user_id=current_user.id).order_by(WardrobeItem.added_date.desc()).all()
-    return render_template('wardrobe.html', title='My Wardrobe', items=items)
-
-@main.route('/save_item', methods=['POST'])
-@login_required
-def save_item():
-    new_item = WardrobeItem(
-        user_id=current_user.id,
-        product_name=request.form['product_name'],
-        brand=request.form['brand'],
-        price=request.form['price'],
-        image_url=request.form['image_url'],
-        product_link=request.form['product_link']
-    )
-    db.session.add(new_item)
-    db.session.commit() # Commit to get the new_item.id
-
-    # Log the interaction
-    interaction = UserInteraction(
-        user_id=current_user.id,
-        wardrobe_item_id=new_item.id,
-        interaction_type='save'
-    )
-    db.session.add(interaction)
-    db.session.commit()
-
-    flash('Item saved to your wardrobe!', 'success')
-    return redirect(request.referrer or url_for('main.dashboard'))
-
-@main.route('/delete_item/<int:item_id>', methods=['POST'])
-@login_required
-def delete_item(item_id):
-    item = WardrobeItem.query.get_or_404(item_id)
-    if item.user_id != current_user.id:
-        # Abort if the user doesn't own the item
-        from flask import abort
-        abort(403)
-    db.session.delete(item)
-    db.session.commit()
-    flash('Item removed from your wardrobe.', 'success')
-    return redirect(url_for('main.wardrobe'))
-
-@main.route('/edit_notes/<int:item_id>', methods=['POST'])
-@login_required
-def edit_notes(item_id):
-    item = WardrobeItem.query.get_or_404(item_id)
-    if item.user_id != current_user.id:
-        from flask import abort
-        abort(403)
-    item.notes = request.form.get('notes')
-    db.session.commit()
-    flash('Notes updated successfully!', 'success')
-    return redirect(url_for('main.wardrobe'))
