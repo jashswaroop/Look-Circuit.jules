@@ -1,10 +1,7 @@
-
 import pandas as pd
 from .models import UserInteraction, WardrobeItem, User
 from . import db
 from sklearn.metrics.pairwise import cosine_similarity
-
-def get_user_item_matrix():
     """
     Fetches user interaction data and creates a user-item matrix.
 
@@ -15,8 +12,8 @@ def get_user_item_matrix():
                    interactions are found.
     """
     # Query the database for all 'save' interactions
-    interactions = db.session.query(UserInteraction.user_id, UserInteraction.wardrobe_item_id)
-    interactions = interactions.filter_by(interaction_type='save').all()
+    interactions = db.session.query(UserInteraction.user_id, UserInteraction.wardrobe_item_id)\
+        .filter_by(interaction_type='save').all()
 
     if not interactions:
         return pd.DataFrame()
