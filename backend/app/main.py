@@ -8,7 +8,6 @@ from .models import User, UserImage
 from .forms import UpdateProfileForm, StyleGuideForm, RegistrationForm, LoginForm
 from .analysis import detect_face_shape, analyze_skin_tone
 from .recommender import generate_recommendations
-from .ml_engine import get_item_based_recommendations
 
 main = Blueprint('main', __name__)
 
@@ -130,7 +129,8 @@ def analysis():
 @login_required
 def recommendations():
     rule_based_recs = generate_recommendations(current_user)
-    ml_recs = get_item_based_recommendations(current_user.id)
+    # This is a placeholder for the ML-based recommendations
+    ml_recs = []
 
     return render_template(
         'recommendations.html',

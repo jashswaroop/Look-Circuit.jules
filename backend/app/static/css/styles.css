@@ -9,7 +9,7 @@
     }
 
     .product-card {
-        @apply bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden group transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1;
+        @apply bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden group transition-shadow duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1;
     }
 
     .product-card-image-container {
@@ -17,6 +17,10 @@
     }
 
     .product-card-image {
-        @apply w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105;
+        @apply w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-105 transform-gpu;
+    }
+
+    .quick-action-card {
+        @apply p-6 rounded-lg text-white text-center transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg;
     }
 }
